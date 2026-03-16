@@ -57,6 +57,28 @@ const TELUGU_SONGS = [
     thumbnailUrl: 'https://images.unsplash.com/photo-1516280440502-85078d154ee4?w=800&q=80',
     likesCount: '3.2M',
     viewsCount: '120M'
+  },
+  {
+    id: 'ts6',
+    title: 'Chill Bro - Pattas',
+    movie: 'Pattas',
+    creatorName: 'Tamil/Telugu Hit Songs',
+    source: 'YouTube',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80',
+    likesCount: '1.2M',
+    viewsCount: '40M'
+  },
+  {
+    id: 'ts7',
+    title: 'The Raja Saab Title Glimpse',
+    movie: 'The Raja Saab',
+    creatorName: 'Telugu Hit Songs',
+    source: 'YouTube',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1493225457124-a1a2a2951113?w=800&q=80',
+    likesCount: '2.5M',
+    viewsCount: '50M'
   }
 ];
 
