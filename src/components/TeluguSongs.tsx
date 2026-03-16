@@ -8,7 +8,8 @@ const TELUGU_SONGS = [
     title: 'Naatu Naatu - RRR (Ad-Free Premium Video)',
     movie: 'RRR',
     creatorName: 'Telugu Hit Songs',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    source: 'JioSaavn',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
     thumbnailUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80',
     likesCount: '4.5M',
     viewsCount: '150M'
@@ -18,7 +19,8 @@ const TELUGU_SONGS = [
     title: 'Butta Bomma - Ala Vaikunthapurramuloo',
     movie: 'Ala Vaikunthapurramuloo',
     creatorName: 'Telugu Hit Songs',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    source: 'Naa Songs',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
     thumbnailUrl: 'https://images.unsplash.com/photo-1493225457124-a1a2a2951113?w=800&q=80',
     likesCount: '2.1M',
     viewsCount: '80M'
@@ -28,7 +30,8 @@ const TELUGU_SONGS = [
     title: 'Samajavaragamana - Ala Vaikunthapurramuloo',
     movie: 'Ala Vaikunthapurramuloo',
     creatorName: 'Telugu Hit Songs',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    source: 'JioSaavn',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
     thumbnailUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80',
     likesCount: '1.8M',
     viewsCount: '65M'
@@ -38,7 +41,8 @@ const TELUGU_SONGS = [
     title: 'Kalaavathi - Sarkaru Vaari Paata',
     movie: 'Sarkaru Vaari Paata',
     creatorName: 'Telugu Hit Songs',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    source: 'Naa Songs',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
     thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80',
     likesCount: '1.5M',
     viewsCount: '55M'
@@ -48,7 +52,8 @@ const TELUGU_SONGS = [
     title: 'Oo Antava - Pushpa',
     movie: 'Pushpa: The Rise',
     creatorName: 'Telugu Hit Songs',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
+    source: 'JioSaavn',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
     thumbnailUrl: 'https://images.unsplash.com/photo-1516280440502-85078d154ee4?w=800&q=80',
     likesCount: '3.2M',
     viewsCount: '120M'
@@ -149,9 +154,14 @@ function SongCard({ song, index }: { song: typeof TELUGU_SONGS[0], index: number
         </h3>
         
         <div className="flex items-center justify-between mb-4">
-          <p className="text-sm text-white/60 font-medium">
-            Movie: <span className="text-white/80">{song.movie}</span>
-          </p>
+          <div className="flex flex-col gap-1">
+            <p className="text-sm text-white/60 font-medium">
+              Movie: <span className="text-white/80">{song.movie}</span>
+            </p>
+            <p className="text-xs text-emerald-400/80 font-medium flex items-center gap-1">
+              <Music className="w-3 h-3" /> Source: {song.source}
+            </p>
+          </div>
           <div className="flex items-center gap-2">
             <button 
               onClick={(e) => { e.stopPropagation(); setIsMuted(!isMuted); }}

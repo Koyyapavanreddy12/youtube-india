@@ -17,9 +17,21 @@ export default function NewsFeed() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch('/api/news');
-        const data = await response.json();
-        setNews(data);
+        // Simulating API call with mock data
+        const MOCK_NEWS: NewsItem[] = [
+          { id: '1', title: 'Global Tech Summit 2026 Announces Revolutionary AI Breakthroughs', category: 'technology', country: 'Global' },
+          { id: '2', title: 'SpaceX Successfully Launches New Mars Transport Vehicle', category: 'technology', country: 'USA' },
+          { id: '3', title: 'Olympics 2026: Winter Games Opening Ceremony Dazzles the World', category: 'sports', country: 'Italy' },
+          { id: '4', title: 'Major Economic Forum Concludes with Historic Trade Agreement', category: 'business', country: 'Switzerland' },
+          { id: '5', title: 'New Electric Vehicle Battery Tech Promises 1000-Mile Range', category: 'technology', country: 'Japan' },
+          { id: '6', title: 'Global Markets Rally as Inflation Hits Record Lows', category: 'business', country: 'Global' },
+          { id: '7', title: 'International Climate Summit Reaches Landmark Emissions Deal', category: 'politics', country: 'France' },
+          { id: '8', title: 'World Cup Finals Set for Epic Showdown This Weekend', category: 'sports', country: 'Global' },
+        ];
+        
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 800));
+        setNews(MOCK_NEWS);
       } catch (err) {
         console.error('Error fetching news:', err);
       } finally {
