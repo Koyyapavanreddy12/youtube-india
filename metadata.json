@@ -1,0 +1,5 @@
+{
+  "name": "GlobalStream",
+  "description": "A modern video streaming platform for short videos, live streams, and global news.",
+  "requestFramePermissions": ["camera", "microphone", "geolocation"]
+}

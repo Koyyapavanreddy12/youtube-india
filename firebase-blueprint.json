@@ -1,0 +1,105 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "bio": { "type": "string" },
+        "followersCount": { "type": "number" },
+        "followingCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Video": {
+      "title": "Video",
+      "description": "Video metadata",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "creatorName": { "type": "string" },
+        "creatorPhoto": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "videoUrl": { "type": "string" },
+        "thumbnailUrl": { "type": "string" },
+        "type": { "type": "string", "enum": ["short", "long"] },
+        "likesCount": { "type": "number" },
+        "commentsCount": { "type": "number" },
+        "sharesCount": { "type": "number" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["creatorId", "videoUrl", "type"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "Video comment",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "videoId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userPhoto": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["videoId", "userId", "text"]
+    },
+    "Follow": {
+      "title": "Follow",
+      "description": "User follow relationship",
+      "type": "object",
+      "properties": {
+        "followerId": { "type": "string" },
+        "followingId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["followerId", "followingId"]
+    },
+    "LiveStream": {
+      "title": "LiveStream",
+      "description": "Active live stream metadata",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "creatorName": { "type": "string" },
+        "title": { "type": "string" },
+        "viewerCount": { "type": "number" },
+        "status": { "type": "string", "enum": ["live", "ended"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["creatorId", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/videos/{videoId}": {
+      "schema": "Video",
+      "description": "Video collection"
+    },
+    "/videos/{videoId}/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Comments on videos"
+    },
+    "/follows/{followId}": {
+      "schema": "Follow",
+      "description": "Follow relationships"
+    },
+    "/streams/{streamId}": {
+      "schema": "LiveStream",
+      "description": "Active streams"
+    }
+  }
+}

@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: users
+    // Fields: uid, displayName, email, photoURL, bio, followersCount, followingCount, createdAt
+    //
+    // Collection: videos
+    // Fields: id, creatorId, creatorName, creatorPhoto, title, description, videoUrl, thumbnailUrl, type, likesCount, commentsCount, sharesCount, tags, createdAt
+    //
+    // Collection: follows
+    // Fields: followerId, followingId, createdAt
+    //
+    // Collection: streams
+    // Fields: id, creatorId, creatorName, title, viewerCount, status, createdAt
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.creatorId;
+    }
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    // Domain Validators
+    function isValidUser(data) {
+      return data.uid is string && data.email is string && isValidEmail(data.email);
+    }
+    function isValidVideo(data) {
+      return data.creatorId is string && data.videoUrl is string && data.type in ['short', 'long'];
+    }
+
+    // Rules
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidUser(request.resource.data);
+    }
+
+    match /videos/{videoId} {
+      allow read: if true; // Publicly readable
+      allow create: if isAuthenticated() && isValidVideo(request.resource.data) && request.resource.data.creatorId == request.auth.uid;
+      allow update: if isAuthenticated() && (isDocOwner() || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likesCount', 'commentsCount', 'sharesCount']));
+      allow delete: if isDocOwner();
+    }
+
+    match /videos/{videoId}/comments/{commentId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && (resource.data.userId == request.auth.uid || get(/databases/$(database)/documents/videos/$(videoId)).data.creatorId == request.auth.uid);
+    }
+
+    match /follows/{followId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.resource.data.followerId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.followerId == request.auth.uid;
+    }
+
+    match /streams/{streamId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && request.resource.data.creatorId == request.auth.uid;
+      allow update: if isAuthenticated() && (request.auth.uid == resource.data.creatorId || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewerCount']));
+      allow delete: if isAuthenticated() && request.auth.uid == resource.data.creatorId;
+    }
+  }
+}
