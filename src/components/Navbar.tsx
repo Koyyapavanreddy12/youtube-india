@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Play, Radio, Newspaper, Upload, User, LogIn, Search } from 'lucide-react';
+import { Home, Play, Radio, Newspaper, Upload, User, LogIn, Search, Music } from 'lucide-react';
 import { UserProfile } from '../types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -20,6 +20,7 @@ export default function Navbar({ user, onAuthClick }: NavbarProps) {
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },
     { path: '/shorts', icon: Play, label: 'Shorts' },
+    { path: '/telugu-songs', icon: Music, label: 'Telugu Songs' },
     { path: '/live', icon: Radio, label: 'Live' },
     { path: '/news', icon: Newspaper, label: 'News' },
   ];
@@ -35,7 +36,26 @@ export default function Navbar({ user, onAuthClick }: NavbarProps) {
           <span className="font-bold text-xl tracking-tighter hidden sm:block">GlobalStream</span>
         </Link>
 
-        <div className="flex-1 max-w-md mx-4 hidden md:block">
+        {/* Desktop Centered Nav Items */}
+        <div className="hidden lg:flex items-center gap-6 mx-4">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={cn(
+                "flex items-center gap-2 px-3 py-2 rounded-xl transition-all font-medium",
+                location.pathname === item.path 
+                  ? "bg-white/10 text-white" 
+                  : "text-white/60 hover:text-white hover:bg-white/5"
+              )}
+            >
+              <item.icon className="w-5 h-5" />
+              <span className="text-sm">{item.label}</span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="flex-1 max-w-md mx-4 hidden md:block lg:hidden">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
             <input 
@@ -46,7 +66,16 @@ export default function Navbar({ user, onAuthClick }: NavbarProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 ml-auto">
+          <div className="hidden lg:block relative mr-4">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              className="w-48 bg-white/5 border border-white/10 rounded-full py-1.5 pl-9 pr-4 text-sm focus:outline-none focus:border-emerald-500/50 transition-colors"
+            />
+          </div>
+
           {user ? (
             <>
               <Link 
@@ -78,29 +107,29 @@ export default function Navbar({ user, onAuthClick }: NavbarProps) {
       </nav>
 
       {/* Mobile Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 right-0 h-16 bg-black border-t border-white/10 z-50 px-4 flex items-center justify-around md:hidden">
+      <nav className="fixed bottom-0 left-0 right-0 h-16 bg-black border-t border-white/10 z-50 px-2 flex items-center justify-around md:hidden overflow-x-auto scrollbar-hide">
         {navItems.map((item) => (
           <Link 
             key={item.path} 
             to={item.path}
             className={cn(
-              "flex flex-col items-center gap-1 transition-colors",
+              "flex flex-col items-center gap-1 transition-colors px-2 flex-shrink-0",
               location.pathname === item.path ? "text-emerald-500" : "text-white/60 hover:text-white"
             )}
           >
-            <item.icon className="w-6 h-6" />
-            <span className="text-[10px] font-medium">{item.label}</span>
+            <item.icon className="w-5 h-5" />
+            <span className="text-[10px] font-medium whitespace-nowrap">{item.label}</span>
           </Link>
         ))}
         {user && (
           <Link 
             to="/upload"
             className={cn(
-              "flex flex-col items-center gap-1 transition-colors",
+              "flex flex-col items-center gap-1 transition-colors px-2 flex-shrink-0",
               location.pathname === '/upload' ? "text-emerald-500" : "text-white/60 hover:text-white"
             )}
           >
-            <Upload className="w-6 h-6" />
+            <Upload className="w-5 h-5" />
             <span className="text-[10px] font-medium">Upload</span>
           </Link>
         )}
