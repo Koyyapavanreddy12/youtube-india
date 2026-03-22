@@ -13,13 +13,30 @@ export default function NewsFeed() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
   useEffect(() => {
+    if ('Notification' in window && Notification.permission === 'granted') {
+      setNotificationsEnabled(true);
+    }
+    
     const fetchNews = async () => {
       try {
-        const response = await fetch('/api/news');
-        const data = await response.json();
-        setNews(data);
+        // Simulating API call with mock data
+        const MOCK_NEWS: NewsItem[] = [
+          { id: '1', title: 'Global Tech Summit 2026 Announces Revolutionary AI Breakthroughs', category: 'technology', country: 'Global' },
+          { id: '2', title: 'SpaceX Successfully Launches New Mars Transport Vehicle', category: 'technology', country: 'USA' },
+          { id: '3', title: 'Olympics 2026: Winter Games Opening Ceremony Dazzles the World', category: 'sports', country: 'Italy' },
+          { id: '4', title: 'Major Economic Forum Concludes with Historic Trade Agreement', category: 'business', country: 'Switzerland' },
+          { id: '5', title: 'New Electric Vehicle Battery Tech Promises 1000-Mile Range', category: 'technology', country: 'Japan' },
+          { id: '6', title: 'Global Markets Rally as Inflation Hits Record Lows', category: 'business', country: 'Global' },
+          { id: '7', title: 'International Climate Summit Reaches Landmark Emissions Deal', category: 'politics', country: 'France' },
+          { id: '8', title: 'World Cup Finals Set for Epic Showdown This Weekend', category: 'sports', country: 'Global' },
+        ];
+        
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 800));
+        setNews(MOCK_NEWS);
       } catch (err) {
         console.error('Error fetching news:', err);
       } finally {
@@ -35,6 +52,24 @@ export default function NewsFeed() {
   const filteredNews = filter === 'all' 
     ? news 
     : news.filter(item => item.category === filter);
+
+  const handleEnableNotifications = async () => {
+    if (!('Notification' in window)) {
+      alert('This browser does not support desktop notification');
+      return;
+    }
+
+    if (Notification.permission === 'granted') {
+      new Notification('Notifications are already enabled!');
+      setNotificationsEnabled(true);
+    } else if (Notification.permission !== 'denied') {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        new Notification('Notifications enabled successfully!');
+        setNotificationsEnabled(true);
+      }
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
@@ -100,8 +135,12 @@ export default function NewsFeed() {
         <p className="text-sm text-white/60 max-w-md mx-auto">
           Get real-time alerts for breaking news worldwide. Customize your feed based on your interests and location.
         </p>
-        <button className="mt-6 bg-emerald-500 text-black px-8 py-3 rounded-full font-bold hover:bg-emerald-600 transition-colors">
-          Enable Notifications
+        <button 
+          onClick={handleEnableNotifications}
+          disabled={notificationsEnabled}
+          className={`mt-6 px-8 py-3 rounded-full font-bold transition-colors ${notificationsEnabled ? 'bg-emerald-500/50 text-black cursor-not-allowed' : 'bg-emerald-500 text-black hover:bg-emerald-600'}`}
+        >
+          {notificationsEnabled ? 'Notifications Enabled' : 'Enable Notifications'}
         </button>
       </div>
     </div>

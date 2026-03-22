@@ -9,6 +9,7 @@ import Upload from './components/Upload';
 import LiveStream from './components/LiveStream';
 import NewsFeed from './components/NewsFeed';
 import AuthModal from './components/AuthModal';
+import TeluguSongs from './components/TeluguSongs';
 
 export default function App() {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -60,6 +61,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<VideoFeed />} />
             <Route path="/shorts" element={<VideoFeed type="short" />} />
+            <Route path="/telugu-songs" element={<TeluguSongs />} />
             <Route path="/live" element={<LiveStream />} />
             <Route path="/news" element={<NewsFeed />} />
             <Route 
